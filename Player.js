@@ -1,19 +1,21 @@
 function Player(x, y, speed, canvasWidth, canvasHeight) {
     this.canvasHeight = canvasHeight;
+    this.canvasWidth = canvasWidth;
 
     this.widthRatio = canvasWidth / 400;
     this.heightRatio = canvasHeight / 200;
 
     this.x = canvasWidth/2 - 20*this.widthRatio/2;
-    this.y = canvasHeight/2 - 20*this.heightRatio/2;
+    this.y = canvasHeight / 2 - 20 * this.heightRatio / 2;
 
+    //collision detection rectangle
     this.rectangle = new Rectangle((this.x - 10 * this.widthRatio), (this.y - 10 * this.heightRatio), 20 * this.widthRatio, 20 * this.heightRatio);
 
     this.speed = speed;
 
     this.gameState = 0;
-
-    var trailRects = []; //trail after player
+    
+    this.dead = false;
 
 }
 
@@ -23,6 +25,24 @@ Player.prototype = {
         this.x = x;
         this.y = y;
 
+        //Edge detection
+        if (x > this.canvasWidth-this.rectangle.width/2) {
+            this.x = this.canvasWidth - this.rectangle.width/2;
+        }
+        if (x < 0 + this.rectangle.width/2) {
+            this.x = this.rectangle.width/2;
+        }
+        if (y > this.canvasHeight-this.rectangle.height/2) {
+            this.y = this.canvasHeight - this.rectangle.height / 2;
+            if (this.gameState == 2) {
+                this.dead = true;
+            }
+        }
+        if (y < 0 + this.rectangle.height/2) {
+            this.y = this.rectangle.height / 2;
+        }
+
+        //setting coordiantes of collision rectangle
         this.rectangle.x = (this.x - 10*this.widthRatio);
         this.rectangle.y = (this.y - 10 * this.heightRatio);
     },
@@ -58,7 +78,7 @@ Player.prototype = {
     },
     update: function (currentTime, previousTime, gameState) {
         if (this.gameState == 0) {
-            this.updateLocation(this.x, Math.sin(currentTime / 400)*50+ this.canvasHeight/2);
+            this.updateLocation(this.x, Math.sin(currentTime / 400)*50+ this.canvasHeight/2); // demo moving on start
         }
     },
     updateGameState: function (gameState) {

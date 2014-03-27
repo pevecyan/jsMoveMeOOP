@@ -8,9 +8,11 @@ function Background(canvasWidth, canvasHeight) {
     this.backLayer = [];
     this.frontLayer = [];
 
+    //background generators
     this.backLayerGenerator = new BackgroundGenerator(0, 10, 14, 10);
     this.frontLayerGenerator = new BackgroundGenerator(0, 14, 18, 14);
 
+    //create first line of background
     this.createBackground();
 }
 
@@ -32,7 +34,9 @@ Background.prototype = {
         if (this.frontLayer.length < 21) {
 
             //Create new rectangle on front layer
-            this.frontLayer[this.frontLayer.length] = new BackgroundRectangle(this.frontLayer[this.frontLayer.length-1].x+1, 0, 1, this.frontLayerGenerator.height + this.frontLayerGenerator.difference);
+            this.frontLayer[this.frontLayer.length] = new BackgroundRectangle(this.frontLayer[this.frontLayer.length - 1].x + 1, 0,
+                1, this.frontLayerGenerator.height + this.frontLayerGenerator.difference);
+
             this.frontLayerGenerator.difference = Math.floor((Math.random() * 3) - 1);
             if (this.frontLayerGenerator.height + this.frontLayerGenerator.difference > this.frontLayerGenerator.downLimit ||
                 this.frontLayerGenerator.height + this.frontLayerGenerator.difference < this.frontLayerGenerator.upLimit) {
@@ -42,7 +46,9 @@ Background.prototype = {
         if (this.backLayer.length < 21) {
 
             //Create new rectangle on back layer
-            this.backLayer[this.backLayer.length] = new BackgroundRectangle(this.backLayer[this.backLayer.length-1].x+1, 0, 1, this.backLayerGenerator.height + this.backLayerGenerator.difference);
+            this.backLayer[this.backLayer.length] = new BackgroundRectangle(this.backLayer[this.backLayer.length - 1].x + 1, 0,
+                1, this.backLayerGenerator.height + this.backLayerGenerator.difference);
+
             this.backLayerGenerator.difference = Math.floor((Math.random() * 3) - 1);
             if (this.backLayerGenerator.height + this.backLayerGenerator.difference > this.backLayerGenerator.downLimit ||
                 this.backLayerGenerator.height + this.backLayerGenerator.difference < this.backLayerGenerator.upLimit) {
@@ -54,7 +60,7 @@ Background.prototype = {
         //frontLayer
         context.fillStyle = "#404040";
         for (var i = 0; i < this.frontLayer.length; i++) {
-            context.fillRect(this.frontLayer[i].x * this.widthRatio,
+            context.fillRect(Math.floor(this.frontLayer[i].x * this.widthRatio),
                 this.frontLayer[i].y,
                 this.frontLayer[i].width * this.widthRatio,
                 this.frontLayer[i].height * this.heightRatio);
@@ -63,7 +69,7 @@ Background.prototype = {
         //backLayer
         context.fillStyle = "#000000";
         for (var i = 0; i < this.backLayer.length; i++) {
-            context.fillRect(this.backLayer[i].x * this.widthRatio,
+            context.fillRect(Math.floor(this.backLayer[i].x * this.widthRatio),
                 this.backLayer[i].y,
                 this.backLayer[i].width * this.widthRatio,
                 this.backLayer[i].height * this.heightRatio);
@@ -73,7 +79,9 @@ Background.prototype = {
     createBackground: function () {
         //frontLayer generation
         for(var i = 0; i < 20; i++){
-            this.frontLayer[i] = new BackgroundRectangle(1 * i, 0, 1, this.frontLayerGenerator.height + this.frontLayerGenerator.difference);
+            this.frontLayer[i] = new BackgroundRectangle(1 * i, 0,
+                1, this.frontLayerGenerator.height + this.frontLayerGenerator.difference);
+
             this.frontLayerGenerator.difference = Math.floor((Math.random() * 3) - 1);
             if (this.frontLayerGenerator.height + this.frontLayerGenerator.difference > this.frontLayerGenerator.downLimit ||
                 this.frontLayerGenerator.height + this.frontLayerGenerator.difference < this.frontLayerGenerator.upLimit)

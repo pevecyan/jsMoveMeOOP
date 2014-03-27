@@ -1,12 +1,24 @@
 window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
+var CANVAS_HEIGHT = 400;
+var CANVAS_WIDTH = 800;
+
+function resizeCanvas() {
+    CANVAS_WIDTH = window.innerWidth;
+    CANVAS_HEIGHT = window.innerHeight;
+    if (CANVAS_WIDTH > 800) { CANVAS_WIDTH = 800; }
+    if (CANVAS_HEIGHT * 2 > CANVAS_WIDTH) { CANVAS_HEIGHT = CANVAS_WIDTH / 2; }
+
+    document.getElementById('gameCanvas').setAttribute('width', CANVAS_WIDTH);
+    document.getElementById('gameCanvas').setAttribute('height', CANVAS_HEIGHT);
+
+}
 function start() {
 
     var canvas = document.getElementById('gameCanvas');
     var context = canvas.getContext('2d');//2D canvas context
 
-    var CANVAS_HEIGHT = 400;
-    var CANVAS_WIDTH = 800;
+    
 
     /*INPUT EVENTS*/
     //touchmove
@@ -34,8 +46,6 @@ function start() {
     /*Game state control : 0 - menu; 1 - playing; 2 - game over*/
     var gameState = 0;
 
-    
-    
     //Player
     var player = new Player(30, 30, 0.02, CANVAS_WIDTH, CANVAS_HEIGHT);
 
@@ -79,9 +89,9 @@ function start() {
             player.updateLocation(x, y);
         }
     }
-
     function touchEnd(x, y) {
         if (world.gameState == 0) { world.updateGameState(1); }
+        if (world.gameState == 2 && world.player.dead) { world.updateGameState(0); }
     }
    
     requestAnimationFrame(gameLoop);
