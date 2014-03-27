@@ -1,12 +1,20 @@
 function Player(x, y, speed, canvasWidth, canvasHeight) {
+    this.canvasHeight = canvasHeight;
+
     this.widthRatio = canvasWidth / 400;
     this.heightRatio = canvasHeight / 200;
-    this.x = x;
-    this.y = y;
 
+    this.x = canvasWidth/2 - 20*this.widthRatio/2;
+    this.y = canvasHeight/2 - 20*this.heightRatio/2;
 
+    this.rectangle = new Rectangle((this.x - 10 * this.widthRatio), (this.y - 10 * this.heightRatio), 20 * this.widthRatio, 20 * this.heightRatio);
 
     this.speed = speed;
+
+    this.gameState = 0;
+
+    var trailRects = []; //trail after player
+
 }
 
 Player.prototype = {
@@ -14,6 +22,9 @@ Player.prototype = {
     updateLocation: function (x, y) {
         this.x = x;
         this.y = y;
+
+        this.rectangle.x = (this.x - 10*this.widthRatio);
+        this.rectangle.y = (this.y - 10 * this.heightRatio);
     },
     draw: function (context) {
         //HEAD
@@ -44,5 +55,20 @@ Player.prototype = {
         context.fillStyle = "#000000";
         context.fillRect(this.x - (10 - 17) * this.widthRatio, this.y - (10 - 16) * this.heightRatio,
             3 * this.widthRatio, 2 * this.heightRatio);
+    },
+    update: function (currentTime, previousTime, gameState) {
+        if (this.gameState == 0) {
+            this.updateLocation(this.x, Math.sin(currentTime / 400)*50+ this.canvasHeight/2);
+        }
+    },
+    updateGameState: function (gameState) {
+        this.gameState = gameState;
     }
+}
+
+function Rectangle(x, y, width, height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
 }

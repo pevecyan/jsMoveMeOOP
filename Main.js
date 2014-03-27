@@ -29,18 +29,18 @@ function start() {
     /*Time Control variables*/
     var currentTime = 0; // current Time inside of loop
     var previousTime = 0; // time inside of loop one cylcle before
-    var startTime; //time, when looping started
+    var startTime = null; //time, when looping started
 
     /*Game state control : 0 - menu; 1 - playing; 2 - game over*/
     var gameState = 0;
 
-    //Background
-    var background = new Background(CANVAS_WIDTH, CANVAS_HEIGHT);
+    
     
     //Player
-    var player = new Player(30, 30, 3, CANVAS_WIDTH, CANVAS_HEIGHT);
+    var player = new Player(30, 30, 0.02, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-    //Obstacles
+    //World
+    var world = new World(CANVAS_WIDTH, CANVAS_HEIGHT, player);
 
 
     function gameLoop(gameTime) {
@@ -57,14 +57,16 @@ function start() {
     }
 
     function update() {
-        background.update();
+        
 
+        world.update(currentTime - previousTime, context);
+        player.update(currentTime, previousTime, gameState);
     }
 
     function draw() {
         context.fillStyle = "#7A7A7A";
         context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        background.draw(context);
+        world.draw(context);
         player.draw(context);
 
     }
@@ -72,11 +74,14 @@ function start() {
 
     /*functions called from input*/
     function touchMove(x, y) {
-        player.updateLocation(x,y);
+        if (world.gameState == 1) {
+            if (!world.moving) { world.moving = true; }
+            player.updateLocation(x, y);
+        }
     }
 
     function touchEnd(x, y) {
-
+        if (world.gameState == 0) { world.updateGameState(1); }
     }
    
     requestAnimationFrame(gameLoop);

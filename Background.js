@@ -20,11 +20,11 @@ Background.prototype = {
 
         //moving backgrounds parallax
         for (var i = 0; i < this.frontLayer.length; i++) {
-            this.frontLayer[i].x -= 0.2;
+            this.frontLayer[i].x -= 0.1;
             if (this.frontLayer[i].x <= -this.frontLayer[i].width) { this.frontLayer.shift(); i--; }
         }
         for (var i = 0; i < this.backLayer.length; i++) {
-            this.backLayer[i].x -= 0.1;
+            this.backLayer[i].x -= 0.05;
             if (this.backLayer[i].x <= -this.backLayer[i].width) { this.backLayer.shift(); i--; }
         }
 
